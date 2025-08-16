@@ -1,78 +1,66 @@
 // JavaScript for the modern website
 
 document.addEventListener('DOMContentLoaded', () => {
-    const sieveGrid = document.getElementById('sieve-grid');
-    if (!sieveGrid) {
-        // Not on the primegesis page, so do nothing.
-        return;
-    }
-
-    const startBtn = document.getElementById('start-sieve-btn');
-    const maxNumber = 100;
-
-    // --- 1. Generate the number grid ---
-    function generateSieveGrid() {
-        sieveGrid.innerHTML = ''; // Clear previous grid
-        for (let i = 2; i <= maxNumber; i++) {
-            const cell = document.createElement('div');
-            cell.classList.add('number-cell');
-            cell.id = `cell-${i}`;
-            cell.textContent = i;
-            sieveGrid.appendChild(cell);
-        }
-    }
-
-    // --- 2. Animation Logic ---
     const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-    async function startSieveAnimation() {
-        startBtn.disabled = true;
-        generateSieveGrid(); // Reset grid before starting
+    // --- Sieve of Eratosthenes Logic ---
+    const sieveContainer = document.getElementById('sieve-container');
+    if (sieveContainer) {
+        const sieveGrid = document.getElementById('sieve-grid');
+        const startBtn = document.getElementById('start-sieve-btn');
+        const maxNumber = 100;
 
-        let isPrime = Array(maxNumber + 1).fill(true);
-        isPrime[0] = isPrime[1] = false;
+        function generateSieveGrid() {
+            sieveGrid.innerHTML = '';
+            for (let i = 2; i <= maxNumber; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('number-cell');
+                cell.id = `cell-${i}`;
+                cell.textContent = i;
+                sieveGrid.appendChild(cell);
+            }
+        }
 
-        for (let p = 2; p * p <= maxNumber; p++) {
-            if (isPrime[p]) {
-                // Highlight the current prime number
-                const primeCell = document.getElementById(`cell-${p}`);
-                if (primeCell) {
-                    primeCell.classList.add('prime');
-                    await sleep(500); // Pause to show which prime we're using
-                }
-
-                // Mark all multiples of p as not prime
-                for (let i = p * p; i <= maxNumber; i += p) {
-                    if (isPrime[i]) {
-                        isPrime[i] = false;
-                        const compositeCell = document.getElementById(`cell-${i}`);
-                        if (compositeCell) {
-                            compositeCell.classList.add('composite');
-                            await sleep(50); // Short delay for each multiple
+        async function startSieveAnimation() {
+            startBtn.disabled = true;
+            generateSieveGrid();
+            let isPrime = Array(maxNumber + 1).fill(true);
+            isPrime[0] = isPrime[1] = false;
+            for (let p = 2; p * p <= maxNumber; p++) {
+                if (isPrime[p]) {
+                    const primeCell = document.getElementById(`cell-${p}`);
+                    if (primeCell) {
+                        primeCell.classList.add('prime');
+                        await sleep(500);
+                    }
+                    for (let i = p * p; i <= maxNumber; i += p) {
+                        if (isPrime[i]) {
+                            isPrime[i] = false;
+                            const compositeCell = document.getElementById(`cell-${i}`);
+                            if (compositeCell) {
+                                compositeCell.classList.add('composite');
+                                await sleep(50);
+                            }
                         }
                     }
                 }
             }
-        }
-
-        // --- 3. Highlight all remaining prime numbers ---
-        await sleep(500);
-        for (let i = 2; i <= maxNumber; i++) {
-            if (isPrime[i]) {
-                const cell = document.getElementById(`cell-${i}`);
-                if (cell && !cell.classList.contains('prime')) {
-                    cell.classList.add('prime');
-                    await sleep(25);
+            await sleep(500);
+            for (let i = 2; i <= maxNumber; i++) {
+                if (isPrime[i]) {
+                    const cell = document.getElementById(`cell-${i}`);
+                    if (cell && !cell.classList.contains('prime')) {
+                        cell.classList.add('prime');
+                        await sleep(25);
+                    }
                 }
             }
+            startBtn.disabled = false;
         }
 
-        startBtn.disabled = false;
+        generateSieveGrid();
+        startBtn.addEventListener('click', startSieveAnimation);
     }
-
-    // --- 4. Attach event listener ---
-    generateSieveGrid(); // Initial grid generation
-    startBtn.addEventListener('click', startSieveAnimation);
 
     // --- Pascal's Triangle Logic ---
     const pascalContainer = document.getElementById('pascal-container');
@@ -86,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let n = 0; n < numRows; n++) {
                 const rowDiv = document.createElement('div');
                 rowDiv.classList.add('pascal-row');
-                let C_nk = 1; // First element is always 1
+                let C_nk = 1;
                 for (let k = 0; k <= n; k++) {
                     const numberSpan = document.createElement('span');
                     numberSpan.classList.add('pascal-number');
@@ -95,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     numberSpan.dataset.n = n;
                     numberSpan.dataset.k = k;
                     rowDiv.appendChild(numberSpan);
-                    // Calculate next coefficient C(n, k+1) using C(n, k)
                     C_nk = C_nk * (n - k) / (k + 1);
                 }
                 triangleDiv.appendChild(rowDiv);
@@ -104,14 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function highlightFibonacci() {
             fibonacciBtn.disabled = true;
-            // Clear previous highlights
             document.querySelectorAll('.fibonacci-highlight').forEach(el => {
                 el.classList.remove('fibonacci-highlight');
             });
-
             await sleep(300);
-
-            const maxDiagonalSum = (numRows - 1); // n+k for the last element in the first column
+            const maxDiagonalSum = (numRows - 1);
             for (let m = 0; m <= maxDiagonalSum; m++) {
                 const diagonalCells = [];
                 for (let n = 0; n < numRows; n++) {
@@ -123,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 }
-
                 if (diagonalCells.length > 0) {
                     diagonalCells.forEach(cell => cell.classList.add('fibonacci-highlight'));
                     await sleep(400);
@@ -135,5 +118,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         generatePascalTriangle();
         fibonacciBtn.addEventListener('click', highlightFibonacci);
+    }
+
+    // --- I-Ching Oracle Logic ---
+    const oracleContainer = document.getElementById('oracle-container');
+    if (oracleContainer) {
+        const askBtn = document.getElementById('ask-oracle-btn');
+        const hexagramDisplay = document.getElementById('hexagram-display');
+
+        function generateRandomHexagram() {
+            hexagramDisplay.innerHTML = '';
+            for (let i = 0; i < 6; i++) {
+                const lineDiv = document.createElement('div');
+                lineDiv.classList.add('hexagram-line');
+                const isYin = Math.random() < 0.5;
+                if (isYin) {
+                    lineDiv.classList.add('yin-line');
+                } else {
+                    lineDiv.classList.add('yang-line');
+                }
+                hexagramDisplay.appendChild(lineDiv);
+            }
+        }
+        generateRandomHexagram(); // Generate one on page load
+        askBtn.addEventListener('click', generateRandomHexagram);
     }
 });

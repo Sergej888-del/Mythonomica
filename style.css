@@ -80,3 +80,46 @@
     font-size: 1em;
     cursor: pointer;
 }
+
+/* I-Ching Oracle Visualization */
+#oracle-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#hexagram-display {
+    margin: 20px auto;
+    width: 200px;
+    display: flex;
+    flex-direction: column-reverse; /* To stack lines from bottom to top */
+    gap: 10px;
+}
+
+.hexagram-line {
+    width: 100%;
+    height: 15px;
+}
+
+.yang-line {
+    background-color: #333;
+}
+
+.yin-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.yin-line::before,
+.yin-line::after {
+    content: '';
+    display: block;
+    width: 45%;
+    height: 100%;
+    background-color: #333;
+}
+
+#ask-oracle-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
