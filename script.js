@@ -73,4 +73,67 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 4. Attach event listener ---
     generateSieveGrid(); // Initial grid generation
     startBtn.addEventListener('click', startSieveAnimation);
+
+    // --- Pascal's Triangle Logic ---
+    const pascalContainer = document.getElementById('pascal-container');
+    if (pascalContainer) {
+        const triangleDiv = document.getElementById('pascal-triangle');
+        const fibonacciBtn = document.getElementById('fibonacci-btn');
+        const numRows = 12;
+
+        function generatePascalTriangle() {
+            triangleDiv.innerHTML = '';
+            for (let n = 0; n < numRows; n++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.classList.add('pascal-row');
+                let C_nk = 1; // First element is always 1
+                for (let k = 0; k <= n; k++) {
+                    const numberSpan = document.createElement('span');
+                    numberSpan.classList.add('pascal-number');
+                    numberSpan.textContent = C_nk;
+                    numberSpan.title = `C(${n}, ${k})`;
+                    numberSpan.dataset.n = n;
+                    numberSpan.dataset.k = k;
+                    rowDiv.appendChild(numberSpan);
+                    // Calculate next coefficient C(n, k+1) using C(n, k)
+                    C_nk = C_nk * (n - k) / (k + 1);
+                }
+                triangleDiv.appendChild(rowDiv);
+            }
+        }
+
+        async function highlightFibonacci() {
+            fibonacciBtn.disabled = true;
+            // Clear previous highlights
+            document.querySelectorAll('.fibonacci-highlight').forEach(el => {
+                el.classList.remove('fibonacci-highlight');
+            });
+
+            await sleep(300);
+
+            const maxDiagonalSum = (numRows - 1); // n+k for the last element in the first column
+            for (let m = 0; m <= maxDiagonalSum; m++) {
+                const diagonalCells = [];
+                for (let n = 0; n < numRows; n++) {
+                    let k = m - n;
+                    if (k >= 0 && k <= n) {
+                        const cell = document.querySelector(`[data-n='${n}'][data-k='${k}']`);
+                        if (cell) {
+                            diagonalCells.push(cell);
+                        }
+                    }
+                }
+
+                if (diagonalCells.length > 0) {
+                    diagonalCells.forEach(cell => cell.classList.add('fibonacci-highlight'));
+                    await sleep(400);
+                    diagonalCells.forEach(cell => cell.classList.remove('fibonacci-highlight'));
+                }
+            }
+            fibonacciBtn.disabled = false;
+        }
+
+        generatePascalTriangle();
+        fibonacciBtn.addEventListener('click', highlightFibonacci);
+    }
 });

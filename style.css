@@ -41,3 +41,42 @@
     font-size: 1em;
     cursor: pointer;
 }
+
+/* Pascal's Triangle Visualization */
+#pascal-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#pascal-triangle {
+    font-family: monospace;
+    margin-top: 15px;
+    display: inline-block;
+    text-align: center;
+}
+
+.pascal-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.pascal-number {
+    padding: 5px;
+    margin: 0 5px;
+    min-width: 30px;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background-color 0.3s;
+}
+
+.fibonacci-highlight {
+    background-color: #add8e6; /* Light Blue */
+    border-radius: 5px;
+}
+
+#fibonacci-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
