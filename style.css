@@ -36,12 +36,6 @@
     text-decoration: line-through;
 }
 
-#start-sieve-btn {
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-}
-
 /* Pascal's Triangle Visualization */
 #pascal-container {
     margin-top: 20px;
@@ -73,12 +67,6 @@
 .fibonacci-highlight {
     background-color: #add8e6; /* Light Blue */
     border-radius: 5px;
-}
-
-#fibonacci-btn {
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
 }
 
 /* I-Ching Oracle Visualization */
@@ -118,8 +106,69 @@
     background-color: #333;
 }
 
-#ask-oracle-btn {
+/* Interactive Piano Visualization */
+#piano-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 300px;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 800px; /* Control max size */
+}
+
+.key {
+    border: 1px solid #333;
+    border-radius: 0 0 5px 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.1s ease;
+}
+
+.key.white {
+    width: 12.5%; /* 100% / 8 white keys */
+    height: 100%;
+    background-color: white;
+    z-index: 1;
+}
+
+.key.black {
+    width: 7%;
+    height: 60%;
+    background-color: #333;
+    position: absolute;
+    z-index: 2;
+}
+
+.key.active, .key:active {
+    background-color: #ccc;
+}
+
+/* Positioning the black keys using percentages */
+.key[data-note="C#4"] { left: 9.25%; }  /* (12.5% * 1) - (7% / 2) */
+.key[data-note="D#4"] { left: 21.75%; } /* (12.5% * 2) - (7% / 2) */
+.key[data-note="F#4"] { left: 46.75%; } /* (12.5% * 4) - (7% / 2) */
+.key[data-note="G#4"] { left: 59.25%; } /* (12.5% * 5) - (7% / 2) */
+.key[data-note="A#4"] { left: 71.75%; } /* (12.5% * 6) - (7% / 2) */
+
+#chord-message {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    min-height: 30px;
+    color: #333;
+}
+
+/* --- Unified Styles --- */
+.btn {
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
+    border: 1px solid #333;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #e0e0e0;
 }
