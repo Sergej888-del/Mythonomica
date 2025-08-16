@@ -1,1 +1,43 @@
 /* Styles for the modern website */
+
+/* Sieve of Eratosthenes Visualization */
+#sieve-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#sieve-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-top: 15px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.number-cell {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.prime {
+    background-color: #90ee90; /* Light Green */
+    color: #000;
+    font-weight: bold;
+}
+
+.composite {
+    background-color: #f0f0f0; /* Light Gray */
+    color: #888;
+    text-decoration: line-through;
+}
+
+#start-sieve-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
