@@ -1,1 +1,1 @@
-// JavaScript для современного веб-сайта
+// JavaScript for the modern website
